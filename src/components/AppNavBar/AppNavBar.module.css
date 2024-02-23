@@ -1,0 +1,33 @@
+@import url(https://db.onlinewebfonts.com/c/9e14b4e72dec1db9a60d2636bbfe64f2?family=SFNS+Display);
+
+body {
+  background-color: rgb(255, 255, 255);
+  font-family: "SFNS Display";
+  box-sizing: border-box;
+}
+
+h1 {
+  color: rgb(255, 79, 23);
+}
+.appnavbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+  box-shadow: 0 2px 2px 0 rgba(69, 68, 68, 0.2);
+}
+.login-btn {
+  height: 38px;
+  margin-bottom: 2px;
+  font-weight: 600;
+  border-radius: 6px;
+  font-size: 14px;
+  padding: 14px 4px;
+  margin-left: auto;
+  justify-content: center;
+}
+
+.appnavbar svg {
+  transform: scale(1.5);
+  padding: 14px 4px;
+}
