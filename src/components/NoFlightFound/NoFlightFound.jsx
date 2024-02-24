@@ -1,17 +1,17 @@
 import React from "react";
 import styles from "./NoFlightFound.module.css";
-import no_flight from "../../assets/flight_tenor.gif";
 function NoFlightFound() {
   return (
-    <div className={styles.outer_div}>
-      <div>
-        <img
-          className={styles.img_style}
-          src={no_flight}
-          width={450}
-          height={350}
-        />
-      </div>
+    <div className={`${styles.outer_div} ${styles.img_style}`}>
+      <iframe
+        className={styles.img_style}
+        src="https://giphy.com/embed/xUOxfn3TfKndQeEJe8"
+        width="480"
+        height="480"
+        frameBorder="0"
+        class="giphy-embed"
+        allowFullScreen
+      ></iframe>
     </div>
   );
 }

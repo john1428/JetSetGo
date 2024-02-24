@@ -7,9 +7,9 @@ import CustomButton from "./components/CustomButton";
 import AppNavBar from "./components/AppNavBar/AppNavBar.jsx";
 import Sidebar from "./components/Sidebar/Sidebar";
 import FlightMain from "./components/FlightMain/FlightMain";
-import Offers from "./components/Offers/Offers";
 import { useContext } from "react";
 import { FlightContext } from "./context/FlightContext";
+import RecentSearch from "./components/RecentSearch/RecentSearch.jsx";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -35,7 +35,7 @@ function App() {
         <Sidebar className="side-div" />
         <FlightMain className="flight-div" />
 
-        <Offers className="offer-div" />
+        <RecentSearch />
       </div>
     </>
   );

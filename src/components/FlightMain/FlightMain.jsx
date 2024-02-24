@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styles from "./FlightMain.module.css";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import dayjs from "dayjs";
@@ -16,6 +15,11 @@ import { FlightContext } from "../../context/FlightContext";
 import { useEffect } from "react";
 import NoFlightFound from "../NoFlightFound/NoFlightFound";
 import FlightItem from "../FlightItem/FlightItem";
+
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
+import Button from "@mui/material/Button";
+
 let options1 = ["Delhi (DEL)"];
 let options2 = ["Chennai (MAA)"];
 
@@ -26,8 +30,16 @@ function FlightMain() {
   const [loading, setLoading] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
   const [datevalue, setDateValue] = React.useState(dayjs("2022-04-17"));
-  const { flightData, source, destination } = useContext(FlightContext);
+  const { flightData, source, destination, setRecentFlights } =
+    useContext(FlightContext);
   const [currFlights, setCurrFlights] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   useEffect(() => {
     console.log("date value", datevalue);
@@ -49,26 +61,31 @@ function FlightMain() {
 
   var handleSearch = () => {
     console.log("button clicked");
+    setOpen(true);
+    setTimeout(() => {
+      setOpen(false);
+    }, 2000);
     if (arrivalValue == destinationValue) {
       alert("Same destination and arrival, please change");
     }
     let currSource = arrivalValue.split(" ")[0];
     let currDestination = destinationValue.split(" ")[0];
-    console.log("currSource", currSource);
-    console.log("currDestination", currDestination);
-    console.log("flightData type", typeof flightData);
-    let currDay = new Date(datevalue).getDate();
+    let currDate = new Date(datevalue).getDate();
+    let currDay = new Date(datevalue).getDay();
     let currMonth = new Date(datevalue).getMonth();
     let currYear = new Date(datevalue).getFullYear();
-    console.log("currDay", currDay);
-    console.log("currMonth", currMonth);
-    console.log("currYear", currYear);
+    setRecentFlights((prev) => {
+      return [
+        ...prev,
+        { currSource, currDestination, currDay, currDate, currMonth },
+      ];
+    });
     setCurrFlights(
       flightData.filter(
         (element) =>
           element.displayData.source.airport.cityName == currSource &&
           element.displayData.destination.airport.cityName == currDestination &&
-          new Date(element.displayData.source.depTime).getDate() == currDay &&
+          new Date(element.displayData.source.depTime).getDate() == currDate &&
           new Date(element.displayData.source.depTime).getMonth() ==
             currMonth &&
           new Date(element.displayData.source.depTime).getFullYear() == currYear
@@ -79,6 +96,13 @@ function FlightMain() {
 
   return (
     <div className={styles.outer_div}>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+        onClick={handleClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div>
         <h1>Search Flights</h1>
         <h3>Enjoy Hassle free bookings with JetSetGo</h3>
@@ -168,26 +192,28 @@ function FlightMain() {
           <span>Search Flights</span>
         </div>
       </div>
-      <div>
-        {currFlights.length == 0 ? (
-          <NoFlightFound />
-        ) : (
-          <div className={styles.flight_items}>
-            <div className={styles.mostOuter}>
-              <p>Airlines</p>
-              <p>Departure</p>
-              <p>Duration</p>
+      {!open && (
+        <div>
+          {currFlights.length == 0 ? (
+            <NoFlightFound />
+          ) : (
+            <div className={styles.flight_items}>
+              <div className={styles.mostOuter}>
+                <p>Airlines</p>
+                <p>Departure</p>
+                <p>Duration</p>
 
-              <p>Arrival</p>
+                <p>Arrival</p>
 
-              <p>Price</p>
+                <p>Price</p>
+              </div>
+              {currFlights.map((flight) => (
+                <FlightItem key={flight.id} flight={flight} />
+              ))}
             </div>
-            {currFlights.map((flight) => (
-              <FlightItem key={flight.id} flight={flight} />
-            ))}
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

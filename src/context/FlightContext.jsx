@@ -4,8 +4,13 @@ export const FlightContext = createContext(null);
 
 const FlightProvider = ({ children }) => {
   const [flightData, setFlightData] = useState([]);
+  const [recentFlights, setRecentFlights] = useState([]);
 
   let sourcecities = flightData.map(
+    (element) => element.displayData.source.airport.cityName
+  );
+
+  let displaysource = flightData.map(
     (element) =>
       element.displayData.source.airport.cityName +
       " " +
@@ -19,7 +24,11 @@ const FlightProvider = ({ children }) => {
 
   const source = sourcecities;
 
-  let destinationCities = flightData.map(
+  let destinationCities = (sourcecities = flightData.map(
+    (element) => element.displayData.destination.airport.cityName
+  ));
+
+  let displayDestination = flightData.map(
     (element) =>
       element.displayData.destination.airport.cityName +
       " " +
@@ -34,7 +43,16 @@ const FlightProvider = ({ children }) => {
   const destination = destinationCities;
   return (
     <FlightContext.Provider
-      value={{ flightData, setFlightData, source, destination }}
+      value={{
+        flightData,
+        setFlightData,
+        displaysource,
+        source,
+        destination,
+        displayDestination,
+        recentFlights,
+        setRecentFlights,
+      }}
     >
       {children}
     </FlightContext.Provider>
