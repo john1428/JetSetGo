@@ -18,7 +18,8 @@ import FlightItem from "../FlightItem/FlightItem";
 
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-import Button from "@mui/material/Button";
+
+import toast, { Toaster } from "react-hot-toast";
 
 let options1 = ["Delhi (DEL)"];
 let options2 = ["Chennai (MAA)"];
@@ -37,18 +38,6 @@ function FlightMain() {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  useEffect(() => {
-    console.log("date value", datevalue);
-    console.log("inputvalue from", arrivalValue);
-    console.log("inputvalue to", destinationValue);
-    console.log("flightdata to", flightData);
-    console.log("sidd before datevalue", datevalue);
-    console.log("sidd after datevalue", datevalue);
-  }, [arrivalValue, destinationValue]);
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -58,16 +47,22 @@ function FlightMain() {
     setarrivalValue(destinationValue);
     setDestinationValue(arrivalValue);
   };
+  useEffect(() => {
+    if (currFlights.length == 0) {
+      toast.error("No Flights Found");
+    }
+  }, [currFlights]);
 
   var handleSearch = () => {
     console.log("button clicked");
     setOpen(true);
     setTimeout(() => {
       setOpen(false);
+      if (arrivalValue == destinationValue) {
+        toast.error("Same Source and Destination. Please Change one");
+      }
     }, 2000);
-    if (arrivalValue == destinationValue) {
-      alert("Same destination and arrival, please change");
-    }
+
     let currSource = arrivalValue.split(" ")[0];
     let currDestination = destinationValue.split(" ")[0];
     let currDate = new Date(datevalue).getDate();
@@ -91,11 +86,13 @@ function FlightMain() {
           new Date(element.displayData.source.depTime).getFullYear() == currYear
       )
     );
+
     console.log("currFlights", currFlights);
   };
 
   return (
     <div className={styles.outer_div}>
+      <Toaster />
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
