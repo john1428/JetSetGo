@@ -40,3 +40,14 @@ body {
   width: 100%;
   margin: 20px 200px;
 }
+
+.filter_div {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  /* background-color: aliceblue; */
+  justify-content: center;
+  width: 100%;
+  margin: auto;
+  margin-left: 5%;
+}

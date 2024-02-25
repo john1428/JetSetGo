@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import styles from "./FlightMain.module.css";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -17,7 +17,6 @@ import NoFlightFound from "../NoFlightFound/NoFlightFound";
 import FlightItem from "../FlightItem/FlightItem";
 
 import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
 
 import toast, { Toaster } from "react-hot-toast";
 
@@ -31,9 +30,17 @@ function FlightMain() {
   const [loading, setLoading] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
   const [datevalue, setDateValue] = React.useState(dayjs("2022-04-17"));
-  const { flightData, source, destination, setRecentFlights } =
-    useContext(FlightContext);
-  const [currFlights, setCurrFlights] = useState([]);
+  const [hasRendered, setHasRendered] = useState(false);
+
+  const {
+    flightData,
+    source,
+    destination,
+    setRecentFlights,
+    currFlights,
+    setCurrFlights,
+  } = useContext(FlightContext);
+  //   const [currFlights, setCurrFlights] = useState([]);
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
     setOpen(false);
@@ -48,19 +55,27 @@ function FlightMain() {
     setDestinationValue(arrivalValue);
   };
   useEffect(() => {
-    if (currFlights.length == 0) {
-      toast.error("No Flights Found");
-    }
+    if (hasRendered) {
+      if (currFlights.length == 0) {
+        toast.error("No Flights Found");
+      }
+    } else setHasRendered(true);
   }, [currFlights]);
+
+  useEffect(() => {
+    if (arrivalValue == destinationValue) {
+      toast.error("Same Source and Destination. Please Change one");
+    }
+  }, [arrivalValue, destinationValue]);
 
   var handleSearch = () => {
     console.log("button clicked");
     setOpen(true);
     setTimeout(() => {
       setOpen(false);
-      if (arrivalValue == destinationValue) {
-        toast.error("Same Source and Destination. Please Change one");
-      }
+      //   if (arrivalValue == destinationValue) {
+      //     toast.error("Same Source and Destination. Please Change one");
+      //   }
     }, 2000);
 
     let currSource = arrivalValue.split(" ")[0];
@@ -98,7 +113,7 @@ function FlightMain() {
         open={open}
         onClick={handleClose}
       >
-        <CircularProgress color="inherit" />
+        <NoFlightFound />
       </Backdrop>
       <div>
         <h1>Search Flights</h1>

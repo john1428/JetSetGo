@@ -1,0 +1,30 @@
+.rupee_div {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 14%;
+}
+
+.outer_filter_div {
+  margin-left: 12%;
+  width: 60%;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.outer_filter_div_p {
+  margin-left: 40%;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.apply_btn {
+  background-color: #f66a36;
+  color: #ffffff;
+  font-size: 19px;
+  font-weight: 800;
+  padding: 10px;
+  border-radius: 20px;
+  margin-top: 12px;
+  margin-left: 20%;
+  border: 1px solid #ffffff;
+}

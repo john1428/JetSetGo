@@ -8,9 +8,7 @@ import Button from "@mui/material/Button";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { blue } from "@mui/material/colors";
-import { useContext } from "react";
-import { FlightContext } from "../../context/FlightContext";
-import { useEffect } from "react";
+import Filters from "../Filters/Filters";
 
 const theme = createTheme({
   palette: {
@@ -24,8 +22,6 @@ const theme = createTheme({
 });
 
 function Sidebar() {
-  const { flightData, setFlightData } = useContext(FlightContext);
-
   return (
     <div className={styles.sideBarItems}>
       <ul className={styles.ulStyles}>
@@ -62,6 +58,9 @@ function Sidebar() {
           </li>
         </ThemeProvider>
       </ul>
+      {/* <div className={styles.filter_div}>
+        <Filters />
+      </div> */}
     </div>
   );
 }

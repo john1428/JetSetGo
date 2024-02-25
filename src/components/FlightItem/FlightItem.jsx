@@ -57,7 +57,7 @@ function FlightItem({ flight }) {
           </p>
         </div>
         <div className={styles.inner_flight_detail_p}>
-          <p>{flight.fare}</p>
+          <p>{`₹${flight.fare}`}</p>
         </div>
         <div className={styles.outerbtn}>
           <span>Book</span>
